@@ -15,6 +15,7 @@ app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+
 app.use(session({
     secret: process.env.SESSION_KEY,
     resave: false,
@@ -58,6 +59,24 @@ app.get("/register",function(req,res){
 app.get("/login",function(req,res){
     res.render("login");
 });
+
+
+
+app.get("/dashboard",function(req,res){
+    res.render("dashboard");
+});
+
+app.get("/Createbadge",function(req,res){
+    res.render("Createbadge");
+});
+
+app.get("/student",function(req,res){
+    res.render("student");
+});
+app.get("/teacher",function(req,res){
+    res.render("teacher");
+});
+
 
 app.post("/register",function(req,res){
     User.register(
