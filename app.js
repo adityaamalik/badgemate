@@ -30,9 +30,7 @@ mongoose.set("useCreateIndex", true);
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
-    doc_name: String,
-    clinic_name: String,
-    clinic_address: String,
+    name: String
 });
 
 userSchema.plugin(passportLocalMongoose);
