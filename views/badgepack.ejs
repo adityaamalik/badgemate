@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Badge Mate</title>
+    </head>
+    <body>
+        <h1>This is the Badge Pack of Badge Mate</h1>
+            <h3>My badges</h3>
+            <ol>
+                <% foundBadges.forEach(badge => { %>
+                    <li>
+                        <ul>
+                            <li>Name of the badge : <%= badge.name %> </li>
+                            <li>Issuer of the badge : <%= badge.issuer %> </li>
+                            <li>Value of the badge : <%= badge.value %> </li>
+                            <li>Description of the badge : <%= badge.description %> </li>
+                            <li>Issue Date of the badge : <%= badge.issueDate %> </li>
+                            <li>Remark on the badge : <%= badge.remark %> </li>
+                        </ul>
+                    </li>
+                <% }); %> 
+            </ol>
+    </body>
+</html>

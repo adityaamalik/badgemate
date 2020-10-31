@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Badge Mate</title>
+    </head>
+    <body>
+        <h1>This is the Issuer of Badge Mate</h1>
+        <% if(foundUser.isIssuer === false){ %> 
+            <h3>You are not registered please register first</h3>
+            <form method="POST" action="/<%= user_id %>/newissuer">
+                <input type="text" name="issuerWebsite" placeholder="Enter website or course link"/>
+                <input type="submit" value="Become issuer" />
+            </form>
+        <% } else { %> 
+            <h2>You are registered user , create a badge or issue an existing badge </h2>
+            <h3>Create a badge</h3>
+            <form method="POST" action="/<%= user_id %>/createbadge">
+                <input type="text" name="name" placeholder="Name of the badge" />
+                <textarea name="description" placeholder="Enter description"></textarea>
+                <input type="number" name="value" placeholder="Enter value" />
+                <input type="hidden" name="issuer" value="<%= foundUser.username %>" />
+                <input type="submit" value="Create badge" />
+            </form>
+
+            <h3>Created badges</h3>
+            <ol>
+                <% foundBadges.forEach(badge => { %>
+                    <li>
+                        <ul>
+                            <li>Name of the badge : <%= badge.name %> </li>
+                            <li>Value of the badge : <%= badge.value %> </li>
+                            <li>Description of the badge : <%= badge.description %> </li>
+                            <li>Creation Date of the badge : <%= badge.creationDate %> </li>
+                        </ul>
+                    </li>
+                    <form method="POST" action="/<%= foundUser._id %>/issuebadge">
+                        <label for="recipient">Issue this badge to : </label>
+                        <input id="recipient" name="recipient" type="text" placeholder="Recipient Username" />
+                        <label for="remark">Enter a personal remark for badge earner : </label>
+                        <textarea id="remark" name="remark" type="text" placeholder="Badge Earner Remark"></textarea>
+                        <input type="hidden" name="name" value="<%= badge.name %>" />
+                        <input type="hidden" name="value" value="<%= badge.value %>" />
+                        <input type="hidden" name="description" value="<%= badge.description %>" />
+                        <input type="hidden" name="issuer" value="<%= badge.issuer %>" />
+                        <input type="submit" value="Issue" />
+                    </form>
+                <% }); %> 
+            </ol>
+        <% } %> 
+    </body>
+</html>

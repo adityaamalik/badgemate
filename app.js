@@ -30,7 +30,9 @@ mongoose.set("useCreateIndex", true);
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
-    name: String
+    name: String,
+    isIssuer: Boolean,
+    issuerWebsite: String
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -38,6 +40,30 @@ userSchema.plugin(passportLocalMongoose);
 const User = mongoose.model("User",userSchema);
 
 passport.use(User.createStrategy());
+
+const badgeSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    issuer: String,
+    creationDate: Date,
+    description: String,
+    value: Number,
+});
+
+const Badge = mongoose.model("Badge", badgeSchema);
+
+const badgePackSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    issuer: String,
+    recipient: String,
+    issueDate: Date,
+    description: String,
+    value: Number,
+    remark: String,
+});
+
+const Badgepack = mongoose.model("Badgepack", badgePackSchema);
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -63,7 +89,9 @@ app.post("/register",function(req,res){
     User.register(
         {
             username: req.body.username, 
-            name: req.body.name
+            name: req.body.name,
+            isIssuer: false,
+            issuerWebsite: null
         },
         req.body.password,
         function(err,user){
@@ -74,7 +102,7 @@ app.post("/register",function(req,res){
             else{
                 passport.authenticate("local")(req,res, function(){
                     User.findOne({username: req.body.username}, function(err,foundUser){
-                        res.redirect(`/dashboard/${foundUser._id}`);
+                        res.redirect(`/${foundUser._id}/dashboard`);
                     })
                 })
             }
@@ -84,12 +112,12 @@ app.post("/register",function(req,res){
 
 app.post("/login",function(req,res){
 
-    const doc = new Doc({
+    const user = new User({
         username: req.body.username,
         password: req.body.password,
     });
 
-    req.login(doc, function(err){
+    req.login(user, function(err){
         if(err){
             console.log(err);
             res.redirect("/login");
@@ -97,7 +125,7 @@ app.post("/login",function(req,res){
         else{
             passport.authenticate("local")(req,res, function(){
                 User.findOne({username: req.body.username}, function(err,foundUser){
-                    res.redirect(`/dashboard/${foundUser._id}`);
+                    res.redirect(`/${foundUser._id}/dashboard`);
                 })
             })
         }
@@ -109,7 +137,7 @@ app.get("/logout",function(req,res){
     res.redirect("/");
 });
 
-app.get("/dashboard/:user_id",function(req,res){
+app.get("/:user_id/dashboard",function(req,res){
 
     if(req.isAuthenticated()){
         res.render("dashboard",{user_id: req.params.user_id});
@@ -117,6 +145,127 @@ app.get("/dashboard/:user_id",function(req,res){
     else{
         res.redirect("/login");
     }
+});
+
+app.get("/:user_id/badgepack",function(req,res){
+
+    if(req.isAuthenticated()){
+        User.findOne({_id: req.params.user_id}, function(err,foundUser){
+            if(!err){
+                Badgepack.find({recipient: foundUser.username}, function(err,foundBadges){
+                    if(!err){
+                        res.render("badgepack",{user_id: req.params.user_id, foundBadges: foundBadges});
+                    }
+                })
+            }
+        })
+    }
+    else{
+        res.redirect("/login");
+    }
+});
+
+app.get("/:user_id/myissuers",function(req,res){
+
+    if(req.isAuthenticated()){
+        res.render("myissuers",{user_id: req.params.user_id});
+    }
+    else{
+        res.redirect("/login");
+    }
+});
+
+app.get("/:user_id/earnbadge",function(req,res){
+
+    if(req.isAuthenticated()){
+        res.render("earnbadge",{user_id: req.params.user_id});
+    }
+    else{
+        res.redirect("/login");
+    }
+});
+
+app.get("/:user_id/issuer",function(req,res){
+
+    if(req.isAuthenticated()){
+        User.findOne({_id: req.params.user_id}, function(err,foundUser){
+            Badge.find({issuer: foundUser.username}, function(err,foundBadges){
+                res.render("issuer" ,
+                    { 
+                    user_id: foundUser._id,
+                    foundUser: foundUser, 
+                    foundBadges: foundBadges 
+                    }
+                );
+            })
+        })
+    }
+    else{
+        res.redirect("/login");
+    }
+});
+
+app.post("/:user_id/newissuer",function(req,res){
+    if(req.isAuthenticated()){
+        User.findByIdAndUpdate(
+            {_id: req.params.user_id},
+            {isIssuer: true, issuerWebsite: req.body.issuerWebsite},
+            function(err,result){
+                if(err){
+                    res.redirect(`/${req.params.user_id}/issuer`);
+                }
+                else{
+                    res.redirect(`/${req.params.user_id}/issuer`);
+                }
+            }
+        )
+    }else{
+        res.redirect("/login");
+    }
+});
+
+app.post("/:user_id/createbadge",function(req,res){
+
+    if(req.isAuthenticated()){
+        const badge = new Badge({
+            name: req.body.name,
+            issuer: req.body.issuer,
+            description: req.body.description,
+            value: req.body.value,
+            creationDate: new Date(),
+            image: null
+        });
+
+        badge.save();
+
+        res.redirect(`/${req.params.user_id}/issuer`);
+    }else{
+        res.redirect("/login");
+    }
+});
+
+app.post("/:user_id/issuebadge",function(req,res){
+
+    if(req.isAuthenticated()){
+        console.log(req.body);
+        const badge = new Badgepack({
+            name: req.body.name,
+            issuer: req.body.issuer,
+            recipient: req.body.recipient,
+            description: req.body.description,
+            value: req.body.value,
+            issueDate: new Date(),
+            image: null,
+            remark: req.body.remark,
+        });
+
+        badge.save();
+
+        res.redirect(`/${req.params.user_id}/issuer`);
+    }else {
+        res.redirect("/login");
+    }
+
 });
 
 app.listen(process.env.PORT || "3000",function(){
