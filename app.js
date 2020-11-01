@@ -165,16 +165,6 @@ app.get("/:user_id/badgepack",function(req,res){
     }
 });
 
-app.get("/:user_id/myissuers",function(req,res){
-
-    if(req.isAuthenticated()){
-        res.render("myissuers",{user_id: req.params.user_id});
-    }
-    else{
-        res.redirect("/login");
-    }
-});
-
 app.get("/:user_id/earnbadge",function(req,res){
 
     if(req.isAuthenticated()){

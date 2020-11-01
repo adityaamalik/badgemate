@@ -1,23 +1,61 @@
 <html>
     <head>
-        <title>Badge Mate</title>
+        <title>BADGE MATE</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>This is the Badge Pack of Badge Mate</h1>
-            <h3>My badges</h3>
-            <ol>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+            <div>
+                <a class="navbar-brand" href="/<%= user_id %>/dashboard">BADGE MATE</a>
+            </div>
+            
+            <div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/<%= user_id %>/badgepack">BADGEPACK</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/<%= user_id %>/earnbadge">EARN BADGES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/<%= user_id %>/issuer">ISSUE BADGES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">LOGOUT</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <h3 class="my-3">My badges</h3>
+            <div class="row">
                 <% foundBadges.forEach(badge => { %>
-                    <li>
-                        <ul>
-                            <li>Name of the badge : <%= badge.name %> </li>
-                            <li>Issuer of the badge : <%= badge.issuer %> </li>
-                            <li>Value of the badge : <%= badge.value %> </li>
-                            <li>Description of the badge : <%= badge.description %> </li>
-                            <li>Issue Date of the badge : <%= badge.issueDate %> </li>
-                            <li>Remark on the badge : <%= badge.remark %> </li>
-                        </ul>
-                    </li>
+                    <div class="card mr-5 col-md" style="width: 20rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= badge.name %></h5>
+                            <ul style="list-style-type: none;">
+                                <li>Issuer : <%= badge.issuer %> </li>
+                                <li>Value : <%= badge.value %></li>
+                                <li>Description : <%= badge.description %></li>
+                                <li>Issue Date : <%= badge.issueDate %></li>
+                                <li>Remark : <%= badge.remark %></li>
+                            </ul>
+                            <a href="#" class="btn btn-outline-primary">Share</a>
+                            <form method="POST" action="/<%= user_id %>/<%= badge._id %>/delete">
+                                <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                            </form>
+                        </div>
+                    </div>
                 <% }); %> 
-            </ol>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>
