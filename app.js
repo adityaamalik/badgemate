@@ -258,6 +258,24 @@ app.post("/:user_id/issuebadge",function(req,res){
 
 });
 
+app.post("/:user_id/:badge_id/delete", function(req,res){
+    if(req.isAuthenticated()){
+        Badgepack.findByIdAndDelete(req.params.badge_id, function(err,deletedBadge){
+            if(!err){
+                console.log("Deleted Badge : " + deletedBadge);
+            }
+            else {
+                console.log(err);
+                console.log("Badge could not be deleted !");
+            }
+
+            res.redirect(`/${req.params.user_id}/badgepack`);
+        });
+    }else {
+        res.redirect('/login');
+    }
+});
+
 app.listen(process.env.PORT || "3000",function(){
     console.log("Server has started !");
 });
