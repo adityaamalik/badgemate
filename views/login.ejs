@@ -1,14 +1,25 @@
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-        <title>Badge Mate</title>
+        <meta charset="utf-8">
+        <title>Login</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="icon" href="/imgs/badge.ico" type="image/gif" sizes="16x16">
+        
+        <!-- Custom styles for this template -->
+        <link href="/css/registerlogin.css" rel="stylesheet">
     </head>
-    <body>
-        <h1>This is the sign in page of Badge Mate</h1>
-        <form method="POST" action="/login">
-            <input type="email" name="username" placeholder="E-mail" />
-            <input type="password" name="password" placeholder="Password" />
-            <input type="submit" value="Sign-in" /> 
+    <body class="text-center">
+        <form class="form-signin" action="/login" method="POST">
+            <img class="mb-4" src="/imgs/badge.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Please Login</h1>
+            <input type="email" name="username" class="form-control inputs" placeholder="Email address" required autofocus>
+            <input type="password" name="password" class="form-control inputs" placeholder="Password" required>
+            <button class="btn btn-lg btn-outline-dark btn-block inputs" type="submit">Sign in</button>
+            <a href="/register">Not registered yet ?</a>
+            <p class="mt-5 mb-3 text-muted">&copy; BADGE MATE</p>
         </form>
-        <a href="/register">Sign-up</a>(if not registered)
     </body>
 </html>

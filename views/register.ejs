@@ -1,15 +1,28 @@
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-        <title>Badge Mate</title>
+        <meta charset="utf-8">
+        <title>Register</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="icon" href="/imgs/badge.ico" type="image/gif" sizes="16x16">
+        
+        <!-- Custom styles for this template -->
+        <link href="/css/registerlogin.css" rel="stylesheet">
     </head>
-    <body>
-        <h1>This is the sign up page of Badge Mate</h1>
-        <form method="POST" action="/register">
-            <input type="email" name="username" placeholder="E-mail" />
-            <input type="text" name="name" placeholder="Name" />
-            <input type="password" name="password" placeholder="Password" />
-            <input type="submit" value="Sign-Up" /> 
+    <body class="text-center">
+        <form class="form-signin" action="/register" method="POST">
+            <img class="mb-4" src="/imgs/badge.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>
+            <input type="email" name="username" class="form-control inputs" placeholder="Email address" required autofocus>
+            <input type="text" name="name" class="form-control inputs" placeholder="Name" required>
+            <input type="password" id="password" name="password" class="form-control inputs" placeholder="Password" required>
+            <input type="password" id="confirmPassword" class="form-control inputs" placeholder="Confirm Password" required onkeyup="checkPassword()">
+            <button id="signUpBtn" class="btn btn-lg btn-outline-dark btn-block inputs" type="submit" disabled>Sign up</button>
+            <a href="/login">Already registered ?</a>
+            <p class="mt-5 mb-3 text-muted">&copy; BADGE MATE</p>
         </form>
-        <a href="/login">Sign-in</a>(if already registered)
+        <script src="/js/index.js"></script>
     </body>
 </html>
