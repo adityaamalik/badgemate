@@ -114,9 +114,9 @@
                     </li>
                     <form method="POST" action="/<%= foundUser._id %>/issuebadge">
                         <label for="recipient">Issue this badge to : </label>
-                        <input id="recipient" name="recipient" type="text" placeholder="Recipient Username" />
+                        <input id="recipient" class="form-control inputs"  name="recipient" type="text" placeholder="Recipient Username" />
                         <label for="remark">Enter a personal remark for badge earner : </label>
-                        <textarea id="remark" name="remark" type="text" placeholder="Badge Earner Remark"></textarea>
+                        <textarea id="remark" name="remark" type="text" placeholder="Badge Earner Remark" class="form-control inputs" ></textarea>
                         <input type="hidden" name="name" value="<%= badge.name %>" />
                         <input type="hidden" name="value" value="<%= badge.value %>" />
                         <input type="hidden" name="description" value="<%= badge.description %>" />
