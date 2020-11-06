@@ -29,7 +29,7 @@ body {
 
 .section {
     padding: 50px;
-    min-height: 100vh;
+    min-height: 80vh;
   }
   
   
@@ -89,9 +89,3 @@ body {
   }
   
 
-.heading
-{
-  text-align: center;
-  font-size:70px;
-  margin-bottom: 50px;
-}

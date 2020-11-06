@@ -173,20 +173,12 @@ app.get("/:user_id/badgepack",function(req,res){
                     if(!err){
                         Certificates.find({recipient:foundUser.username},function(err,foundCertificate)
                         {
-
-
                             if(!err)
-                            {
-                               
+                            { 
                                 res.render("badgepack",{user_id: req.params.user_id, foundBadges: foundBadges,foundCertificate:foundCertificate});
                             }
                         })
-                       
                     }
-
-
-
-
                 })
             }
         })
@@ -311,6 +303,8 @@ app.post("/:user_id/createbadge",function(req,res){
 
 app.post("/:user_id/issuebadge",function(req,res){
 
+
+    
     if(req.isAuthenticated()){
         console.log(req.body);
         const badge = new Badgepack({
