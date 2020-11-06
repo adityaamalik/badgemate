@@ -72,12 +72,12 @@
 
             
             <div class="create text-center">
-            <form method="POST" action="/<%= user_id %>/createbadge">
+            <form method="POST" action="/<%= user_id %>/createbadge" enctype="multipart/form-data">
                 <!-- <img class="mb-4" src="/imgs/badge.png" alt="" width="72" height="72"> -->
                 <h1 class="h3 mb-3 font-weight-normal">Create Badge</h1>
                 
                 <input type="text" name="name" class="form-control inputs" placeholder="Name of the badge" required>
-
+                <input class="form-control inputs" type="file" id="image" name="image" value="" required>
                 <div class="input-group inputs ">
                  
                     <textarea class="form-control" aria-label="With textarea" name="description" placeholder="Enter description" ></textarea>
@@ -117,6 +117,7 @@
                         <input id="recipient" class="form-control inputs"  name="recipient" type="text" placeholder="Recipient Username" />
                         <label for="remark">Enter a personal remark for badge earner : </label>
                         <textarea id="remark" name="remark" type="text" placeholder="Badge Earner Remark" class="form-control inputs" ></textarea>
+                        <input type="hidden" name="badgeId" value="<%= badge._id %>" />
                         <input type="hidden" name="name" value="<%= badge.name %>" />
                         <input type="hidden" name="value" value="<%= badge.value %>" />
                         <input type="hidden" name="description" value="<%= badge.description %>" />

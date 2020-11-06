@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
+const fs = require('fs'); 
+const path = require('path');
+const multer = require('multer');
 const passportLocalMongoose = require("passport-local-mongoose");
 
 require('dotenv').config();
@@ -43,7 +46,10 @@ passport.use(User.createStrategy());
 
 const badgeSchema = new mongoose.Schema({
     name: String,
-    image: String,
+    image: {
+        data: Buffer,
+        contentType: String,
+    },
     issuer: String,
     creationDate: Date,
     description: String,
@@ -54,7 +60,10 @@ const Badge = mongoose.model("Badge", badgeSchema);
 
 const badgePackSchema = new mongoose.Schema({
     name: String,
-    image: String,
+    image: {
+        data: Buffer,
+        contentType: String,
+    },
     issuer: String,
     recipient: String,
     issueDate: Date,
@@ -72,6 +81,17 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(user, done) {
     done(null, user);
 });
+
+const storage = multer.diskStorage({ 
+    destination: (req, file, cb) => { 
+        cb(null, 'uploads') 
+    }, 
+    filename: (req, file, cb) => { 
+        cb(null, file.fieldname + '-' + Date.now()) 
+    } 
+}); 
+
+const upload = multer({ storage: storage });
 
 app.get("/",function(req,res){
     res.render("landing");
@@ -214,7 +234,7 @@ app.post("/:user_id/newissuer",function(req,res){
     }
 });
 
-app.post("/:user_id/createbadge",function(req,res){
+app.post("/:user_id/createbadge", upload.single('image'), function(req,res){
 
     if(req.isAuthenticated()){
         const badge = new Badge({
@@ -223,7 +243,10 @@ app.post("/:user_id/createbadge",function(req,res){
             description: req.body.description,
             value: req.body.value,
             creationDate: new Date(),
-            image: null
+            image: {
+                data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)), 
+			    contentType: 'image/png'
+            }
         });
 
         badge.save();
@@ -237,19 +260,22 @@ app.post("/:user_id/createbadge",function(req,res){
 app.post("/:user_id/issuebadge",function(req,res){
 
     if(req.isAuthenticated()){
-        console.log(req.body);
-        const badge = new Badgepack({
-            name: req.body.name,
-            issuer: req.body.issuer,
-            recipient: req.body.recipient,
-            description: req.body.description,
-            value: req.body.value,
-            issueDate: new Date(),
-            image: null,
-            remark: req.body.remark,
-        });
 
-        badge.save();
+        Badge.findById(req.body.badgeId,function(err,foundbadge){
+
+            const badge = new Badgepack({
+                name: req.body.name,
+                issuer: req.body.issuer,
+                recipient: req.body.recipient,
+                description: req.body.description,
+                value: req.body.value,
+                issueDate: new Date(),
+                image: foundbadge.image,
+                remark: req.body.remark,
+            });
+    
+            badge.save();
+        })
 
         res.redirect(`/${req.params.user_id}/issuer`);
     }else {
@@ -287,7 +313,7 @@ app.post("/extensionIssue", function(req,res){
                     description: foundBadge.description,
                     value: foundBadge.value,
                     issueDate: new Date(),
-                    image: null,
+                    image: foundBadge.image,
                     remark: req.body.remark
                 });
 
