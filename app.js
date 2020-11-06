@@ -276,6 +276,29 @@ app.post("/:user_id/:badge_id/delete", function(req,res){
     }
 });
 
+app.post("/extensionIssue", function(req,res){
+    User.find({username: req.body.username}, function(err,foundUser){
+        if(!err){
+            Badge.findOne({name: req.body.badgename , issuer: req.body.username}, function(err,foundBadge){
+                const badge = new Badgepack({
+                    name: req.body.badgename,
+                    issuer: req.body.username,
+                    recipient: req.body.recipient,
+                    description: foundBadge.description,
+                    value: foundBadge.value,
+                    issueDate: new Date(),
+                    image: null,
+                    remark: req.body.remark
+                });
+
+                badge.save();
+            })
+        }else{
+            console.log(err);
+        }
+    });
+});
+
 app.listen(process.env.PORT || "3000",function(){
     console.log("Server has started !");
 });
