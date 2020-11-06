@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <title>Page Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="/imgs/badge.ico" type="image/gif" sizes="16x16">
+    
+    <!-- Custom styles for this template -->
+    <link href="/css/registerlogin.css" rel="stylesheet">
+</head>
+<body class="text-center">
+    <form class="form-signin" action="/<%= user_id %>/codeforces" method="post">
+        <img class="mb-4" src="/imgs/badge.png" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">WELCOME</h1>
+        <input type="text" name="userName" class="form-control inputs" placeholder="UserName of Codeforces" required>
+        <input type="hidden" name="reciver" value="<%= foundUser.username %>" />
+        <button id="signUpBtn" class="btn btn-lg btn-outline-dark btn-block inputs" type="submit">SUBMIT</button>
+        <p class="mt-5 mb-3 text-muted">&copy; BADGE MATE</p>
+    </form>
+    <script src="/js/index.js"></script>
+</body>
+</html>

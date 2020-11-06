@@ -1,0 +1,36 @@
+
+
+
+
+.theme-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .theme-card {
+    width: 400px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    text-align: left;
+
+    line-height: 200%;
+    border-radius: 4px;
+    background-color: #eeeeee;
+    box-shadow: var(--shadow);
+    transition: transform 300ms, box-shadow 300ms;
+  }
+  
+  .theme-card i {
+    font-size: 3rem;
+    margin-bottom: 20px
+  }
+  
+  .theme-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  }

@@ -1,0 +1,91 @@
+
+@import url(https://fonts.googleapis.com/css?family=Exo:100);
+
+@keyframes bg-scrolling-reverse {
+  100% {
+    background-position: 50px 50px;
+  }
+}
+@keyframes bg-scrolling {
+  0% {
+    background-position: 50px 50px;
+  }
+}
+
+:root {
+  --shadow: 0 4px 6px -5px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 10px -5px rgba(0, 0, 0, 0.10);
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+.section {
+    padding: 50px;
+    min-height: 80vh;
+  }
+  
+  
+  .hero-section {
+    /* padding: 100px; */
+    color: #999;
+    text-align: center;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAIAAACRXR/mAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAABnSURBVHja7M5RDYAwDEXRDgmvEocnlrQS2SwUFST9uEfBGWs9c97nbGtDcquqiKhOImLs/UpuzVzWEi1atGjRokWLFi1atGjRokWLFi1atGjRokWLFi1af7Ukz8xWp8z8AAAA//8DAJ4LoEAAlL1nAAAAAElFTkSuQmCC")
+      repeat 0 0;
+    animation: bg-scrolling-reverse 0.92s infinite;
+    animation-timing-function: linear;
+    position: relative;
+  }
+  
+  .title1 {
+    margin-top: 100px;
+    margin-right: 50px;
+    position: absolute;
+    z-index: 2;
+    font-size: 1.9rem;
+    padding: 25px;
+    left: 10%;
+    top: 25%;
+  }
+  
+  .title1 h1 {
+    font-family: Poppins;
+    margin-bottom: 10px;
+    color: black;
+  }
+  
+  .title1 h3 {
+    font-family: Poppins;
+    padding-bottom: 5px;
+    color:black;
+  }
+  
+  .title1 h5 {
+    font-family: Poppins;
+    color: black;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .illustration {
+    margin-top: 100px;
+    margin-left: 100px;
+    position: relative;
+    z-index: 0;
+  }
+  
+  .hero-img {
+    position: absolute;
+    top: 80px;
+    right: 5%;
+    z-index: 0;
+  }
+  
+
