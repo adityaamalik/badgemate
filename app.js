@@ -75,6 +75,7 @@ const CertificateSchema = new mongoose.Schema({
     issuer: String,
     creationDate: Date,
     description: String,
+    recipient:String,
     url: String,
     verified:String
 });
@@ -170,8 +171,22 @@ app.get("/:user_id/badgepack",function(req,res){
             if(!err){
                 Badgepack.find({recipient: foundUser.username}, function(err,foundBadges){
                     if(!err){
-                        res.render("badgepack",{user_id: req.params.user_id, foundBadges: foundBadges});
+                        Certificates.find({recipient:foundUser.username},function(err,foundCertificate)
+                        {
+
+
+                            if(!err)
+                            {
+                               
+                                res.render("badgepack",{user_id: req.params.user_id, foundBadges: foundBadges,foundCertificate:foundCertificate});
+                            }
+                        })
+                       
                     }
+
+
+
+
                 })
             }
         })
@@ -338,6 +353,25 @@ app.post("/:user_id/:badge_id/delete", function(req,res){
 
 
 
+app.post("/:user_id/:certificate_id/remove", function(req,res){
+    if(req.isAuthenticated()){
+        Certificates.findByIdAndDelete(req.params.certificate_id, function(err,deletedcertificate){
+            if(!err){
+                console.log("Deleted certificate : " + deletedcertificate);
+            }
+            else {
+                console.log(err);
+                console.log("certificate could not be deleted !");
+            }
+
+            res.redirect(`/${req.params.user_id}/badgepack`);
+        });
+    }else {
+        res.redirect('/login');
+    }
+});
+
+
 
 app.post("/:user_id/codeforces",function(req,res){
 
@@ -352,21 +386,34 @@ app.post("/:user_id/codeforces",function(req,res){
             const fname=userdata.result[0].handle
             const maxrating=userdata.result[0].maxRating
              let val=0
-            if(maxrating>=3000)
+              if(maxrating>=3000)
               valueBadge=10
-            if(maxrating<3000)
+              else if(maxrating< 3000 && maxrating>=2700 )
               valueBadge=9
-            else
+              else if(maxrating< 2700 && maxrating>=2400 )
+              valueBadge=8
+              else if(maxrating< 2400 && maxrating>=2200 )
               valueBadge=7
+              else if(maxrating< 2200 && maxrating>= 1800)
+              valueBadge=6
+              else if(maxrating< 1800 && maxrating>=1600 )
+              valueBadge=5
+              else if(maxrating<1600  && maxrating>= 1400)
+              valueBadge=4
+              else if(maxrating< 1400 && maxrating>= 1200)
+              valueBadge=3
+              else if(maxrating<1200  && maxrating>= 0)
+              valueBadge=2
+        
             const badge = new Badgepack({
-                name: "Codechef user "+fname,
+                name: "Codeforces user "+fname,
                 issuer: "BadgeMate",
                 recipient: reciver,
-                description: "Codechef badge",
+                description: "Codeforces badge",
                 value: valueBadge,
                 issueDate: new Date(),
                 image: null,
-                remark: "Codechef badge",
+                remark: "Codeforces badge",
             });
             badge.save();
           });
@@ -386,12 +433,8 @@ app.post("/:user_id/codeforces",function(req,res){
 app.post("/:user_id/certificate",function(req,res){
 
     if(req.isAuthenticated()){
-        const username=req.body.userName;
-        const issuedby=req.body.issuedby;
-        const reciver=req.body.reciver;
         const Certificate= new Certificates({
-
-          name: req.body.username,
+          name: req.body.name,
           image: null,
           issuer: req.body.issuedby,
           recipient: req.body.reciver,
@@ -399,7 +442,6 @@ app.post("/:user_id/certificate",function(req,res){
           description: req.body.description,
           url:req.body.url,
           verified:"Not by badgemate"
-
         });
 
        Certificate.save();

@@ -37,11 +37,7 @@
         <div class="create">
         <% if(foundUser.isIssuer === false){ %> 
             <h3 class="inputs">You are not registered please register first</h3>
-            <!-- <form method="POST" action="/<%= user_id %>/newissuer">
-                <input type="text" name="issuerWebsite" placeholder="Enter website or course link"/>
-                <input type="submit" value="Become issuer" />
-            </form> -->
-
+         
             <form method="POST" action="/<%= user_id %>/newissuer">
          
                 <div class="input-group inputs ">
@@ -55,22 +51,7 @@
         <% } else { %> 
            
             <h2>You are registered user , create a badge or issue an existing badge </h2>
-            <!-- <br>
-            <h3>Create a badge</h3>
-            <br>
-            <form method="POST" action="/<%= user_id %>/createbadge">
-                <input type="text" name="name" placeholder="Name of the badge" />
-                <br>
-                <textarea name="description" placeholder="Enter description"></textarea>
-                <br>
-                <input type="number" name="value" placeholder="Enter value" />
-                <br>
-                <input type="hidden" name="issuer" value="<%= foundUser.username %>" />
-                <input type="submit" value="Create badge" />
-            </form> -->
 
-
-            
             <div class="create text-center">
             <form method="POST" action="/<%= user_id %>/createbadge">
                 <!-- <img class="mb-4" src="/imgs/badge.png" alt="" width="72" height="72"> -->
@@ -82,15 +63,20 @@
                  
                     <textarea class="form-control" aria-label="With textarea" name="description" placeholder="Enter description" ></textarea>
                   </div>
-                
-
-
+            
                   <div class="input-group inputs">
                     <select class="custom-select" id="inputGroupSelect02" name="value" placeholder="Enter value" >
                       <option selected>Choose...</option>
                       <option value="1">One</option>
                       <option value="2">Two</option>
                       <option value="3">Three</option>
+                      <option value="4">Four</option>
+                      <option value="5">Five</option>
+                      <option value="6">Six</option>
+                      <option value="7">Seven</option>
+                      <option value="8">Eight</option>
+                      <option value="9">Nine</option>
+                      <option value="10">Ten</option>
                     </select>
                     </div>
                     <input type="hidden" name="issuer" value="<%= foundUser.username %>" />

@@ -12,7 +12,7 @@
 <body class="text-center">
     <form class="form-signin" action="/<%= user_id %>/codeforces" method="post">
         <img class="mb-4" src="/imgs/badge.png" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">WELCOME <%=foundUser%></h1>
+        <h1 class="h3 mb-3 font-weight-normal">WELCOME</h1>
         <input type="text" name="userName" class="form-control inputs" placeholder="UserName of Codeforces" required>
         <input type="hidden" name="reciver" value="<%= foundUser.username %>" />
         <button id="signUpBtn" class="btn btn-lg btn-outline-dark btn-block inputs" type="submit">SUBMIT</button>

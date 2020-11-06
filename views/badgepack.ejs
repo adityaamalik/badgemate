@@ -59,6 +59,32 @@
                 <% }); %> 
        
         </div>
+
+
+        <h3 class="my-3">My certificates</h3>
+        <div class="theme-cards">
+            <% foundCertificate.forEach(certificate => { %>
+              
+                    <div class="theme-card ">
+                  
+                        <h5 class="card-title"><%= certificate.issuer %></h5>
+                        <ul style="list-style-type: none;">
+                            <li>Name : <%= certificate.name %> </li>
+                            <li>Description : <%= certificate.description %></li>
+                            <li>creation Date : <%= certificate.creationDate %></li>
+                            <li>Verification: <%=certificate.verified%></li>
+
+                            <a href="<%= certificate.url %>" class="btn btn-outline-primary"> Verification URL</a>
+                        </ul>
+                        <a href="#" class="btn btn-outline-primary">Share</a>
+                        <form method="POST" action="/<%= user_id %>/<%= certificate._id %>/remove">
+                            <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                        </form>
+                    </div>
+                
+            <% }); %> 
+   
+    </div>
       </section>
         <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

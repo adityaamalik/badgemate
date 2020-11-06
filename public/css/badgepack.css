@@ -13,9 +13,11 @@
     margin: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
-    text-align: center;
+    text-align: left;
+
+    line-height: 200%;
     border-radius: 4px;
     background-color: #eeeeee;
     box-shadow: var(--shadow);
