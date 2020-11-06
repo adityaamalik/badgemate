@@ -6,8 +6,7 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const https = require('https');
-const { Certificate } = require("crypto");
-const { NODATA } = require("dns");
+
 require('dotenv').config();
 
 const app = express();
@@ -16,7 +15,6 @@ app.set('view engine','ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-// mongodb+srv://admin-aditya:Mathematics@01@cluster0.x5vhu.mongodb.net/badgeMateDB
 app.use(session({
     secret: process.env.SESSION_KEY,
     resave: false,
@@ -202,9 +200,21 @@ app.get("/:user_id/issuer",function(req,res){
 app.get("/:user_id/codeforces",function(req,res){
 
     if(req.isAuthenticated()){
-        res.render("codeforces",{user_id: req.params.user_id
-            });
+        User.findOne({_id: req.params.user_id}, function(err,foundUser){
+            
+                res.render("codeforces",
+                    { 
+                    user_id: foundUser._id,
+                    foundUser: foundUser, 
+                    }
+                );
+         
+        })
     }
+    // if(req.isAuthenticated()){
+    //     res.render("codeforces",{user_id: req.params.user_id
+    //         });
+    // }
     else{
         res.redirect("/login");
     }
@@ -298,92 +308,41 @@ app.post("/:user_id/:badge_id/delete", function(req,res){
 app.post("/:user_id/codeforces",function(req,res){
 
     if(req.isAuthenticated()){
-        const city=req.body.cityName;
-        // const url="https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=69cb52b745ebce73c94c4e0097996f68&units=metric"
-        const url="https://codeforces.com/api/user.info?handles="+city
+        const username=req.body.userName;
+        const reciver=req.body.reciver;
+        const url="https://codeforces.com/api/user.info?handles="+username
         https.get(url, (response) => {
-         console.log(response);
-         
         
           response.on('data', (data) => {
-            const weatherdata=JSON.parse(data)
-        console.log(weatherdata);
-            const temp=weatherdata.result[0].maxRank
-            // const weatherd=weatherdata.weather[0].description
-            // const icon=weatherdata.weather[0].icon
-            // const image="http://openweathermap.org/img/wn/"+icon+"@2x.png"
-            // res.write("Badge added to backpack");
-        
-            // res.send();
-            const fname=weatherdata.result[0].handle
-
-            const maxrating=weatherdata.result[0].maxRating
- 
-            console.log(maxrating);
-let val=0
-
-if(maxrating>=3000)
-val=10
-if(maxrating<3000)
-val=9
-else
-val=7
-
-
-
-            console.log(req.body);
-            // const badge = new Badge({
-            //     name: "Codechef user"+fname,
-            //     issuer: "BadgeMate",
-            //     description: "Codechef badge",
-            //     value: val,
-            //     creationDate: new Date(),
-            //     image: null
-            // });
-
+            const userdata=JSON.parse(data)
+            const fname=userdata.result[0].handle
+            const maxrating=userdata.result[0].maxRating
+             let val=0
+            if(maxrating>=3000)
+              valueBadge=10
+            if(maxrating<3000)
+              valueBadge=9
+            else
+              valueBadge=7
             const badge = new Badgepack({
-                name: "Codechef user"+fname,
+                name: "Codechef user "+fname,
                 issuer: "BadgeMate",
-                recipient: "altamashkhan59@gmail.com",
+                recipient: reciver,
                 description: "Codechef badge",
-                value: val,
+                value: valueBadge,
                 issueDate: new Date(),
                 image: null,
                 remark: "Codechef badge",
             });
-    
             badge.save();
-    
-            
-    
-           
-
-
-
-            console.log(badge);
           });
-        
-        }
-        );
-
-
-
-
-
-
-
-
+        });
         res.redirect(`/${req.params.user_id}/badgepack`);
-
-       
     }
-    
-    
-    
-    else {
-        res.redirect("/login");
-    }
-
+    else
+     {
+       res.redirect("/login");
+     }
 });
 
 
