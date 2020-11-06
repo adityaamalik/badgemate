@@ -369,6 +369,13 @@ app.post("/:user_id/:badge_id/delete", function(req,res){
     }
 });
 
+app.get("/:badge_id/share", function(req,res){
+    
+    Badgepack.findById(req.params.badge_id, function(err, foundbadge){
+        res.render("sharebadge", {badge: foundbadge});
+    })
+});
+
 app.post("/extensionIssue", function(req,res){
     User.find({username: req.body.username}, function(err,foundUser){
         if(!err){
@@ -493,7 +500,6 @@ app.post("/:user_id/certificate",function(req,res){
        res.redirect("/login");
      }
 });
-
 
 app.listen(process.env.PORT || "3000",function(){
     console.log("Server has started !");
