@@ -6,6 +6,8 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const https = require('https');
+const { stringify } = require("querystring");
+const { Certificate } = require("crypto");
 
 require('dotenv').config();
 
@@ -34,6 +36,8 @@ const userSchema = new mongoose.Schema({
     isIssuer: Boolean,
     issuerWebsite: String
 });
+
+
 
 userSchema.plugin(passportLocalMongoose);
 
@@ -64,6 +68,18 @@ const badgePackSchema = new mongoose.Schema({
 });
 
 const Badgepack = mongoose.model("Badgepack", badgePackSchema);
+
+const CertificateSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    issuer: String,
+    creationDate: Date,
+    description: String,
+    url: String,
+    verified:String
+});
+
+const Certificates = mongoose.model("Certificates", CertificateSchema);
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -211,10 +227,28 @@ app.get("/:user_id/codeforces",function(req,res){
          
         })
     }
-    // if(req.isAuthenticated()){
-    //     res.render("codeforces",{user_id: req.params.user_id
-    //         });
-    // }
+    else{
+        res.redirect("/login");
+    }
+});
+
+
+
+
+app.get("/:user_id/certificate",function(req,res){
+
+    if(req.isAuthenticated()){
+        User.findOne({_id: req.params.user_id}, function(err,foundUser){
+            
+                res.render("certificate",
+                    { 
+                    user_id: foundUser._id,
+                    foundUser: foundUser, 
+                    }
+                );
+         
+        })
+    }
     else{
         res.redirect("/login");
     }
@@ -338,6 +372,38 @@ app.post("/:user_id/codeforces",function(req,res){
           });
         });
         res.redirect(`/${req.params.user_id}/badgepack`);
+    }
+    else
+     {
+       res.redirect("/login");
+     }
+});
+
+
+
+
+
+app.post("/:user_id/certificate",function(req,res){
+
+    if(req.isAuthenticated()){
+        const username=req.body.userName;
+        const issuedby=req.body.issuedby;
+        const reciver=req.body.reciver;
+        const Certificate= new Certificates({
+
+          name: req.body.username,
+          image: null,
+          issuer: req.body.issuedby,
+          recipient: req.body.reciver,
+          creationDate: new Date(),
+          description: req.body.description,
+          url:req.body.url,
+          verified:"Not by badgemate"
+
+        });
+
+       Certificate.save();
+       res.redirect(`/${req.params.user_id}/badgepack`);
     }
     else
      {
