@@ -30,6 +30,11 @@ app.use(passport.session());
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false });
 mongoose.set("useCreateIndex", true);
 
+
+// mongodb+srv://admin-aditya:Mathematics@01@cluster0.x5vhu.mongodb.net/badgeMateDB
+
+
+// mongodb://localhost:27017/badgeMateDB
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
@@ -88,6 +93,24 @@ const CertificateSchema = new mongoose.Schema({
 });
 
 const Certificates = mongoose.model("Certificates", CertificateSchema);
+
+
+
+
+
+
+const codeforcesSchema = new mongoose.Schema({
+    name: String,
+    issuer: String,
+    recipient: String,
+    issueDate: Date,
+    description: String,
+    value: Number,
+    remark: String,
+});
+
+
+const codeforcesBadge= mongoose.model("codeforcesBadge", codeforcesSchema);
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -193,7 +216,18 @@ app.get("/:user_id/badgepack",function(req,res){
                         {
                             if(!err)
                             { 
-                                res.render("badgepack",{user_id: req.params.user_id, foundBadges: foundBadges,foundCertificate:foundCertificate});
+
+                                codeforcesBadge.find({recipient:foundUser.username},function(err,foundCodeforcesbadge)
+                                {
+                                    if(!err)
+                                    {
+                                        res.render("badgepack",{user_id: req.params.user_id, foundBadges: foundBadges,foundCertificate:foundCertificate, foundCodeforcesbadge:foundCodeforcesbadge});
+                                    }
+
+                                })
+
+
+                             
                             }
                         })
                     }
@@ -420,6 +454,24 @@ app.post("/:user_id/:certificate_id/remove", function(req,res){
 });
 
 
+app.post("/:user_id/:badge_id/removeotherbadge", function(req,res){
+    if(req.isAuthenticated()){
+        codeforcesBadge.findByIdAndDelete(req.params.badge_id, function(err,deletedBadge){
+            if(!err){
+                console.log("Deleted badges : " + deletedBadge);
+            }
+            else {
+                console.log(err);
+                console.log("badge could not be deleted !");
+            }
+
+            res.redirect(`/${req.params.user_id}/badgepack`);
+        });
+    }else {
+        res.redirect('/login');
+    }
+});
+
 
 app.post("/:user_id/codeforces",function(req,res){
 
@@ -453,14 +505,14 @@ app.post("/:user_id/codeforces",function(req,res){
               else if(maxrating<1200  && maxrating>= 0)
               valueBadge=2
         
-            const badge = new Badgepack({
+            const badge = new codeforcesBadge({
                 name: "Codeforces user "+fname,
                 issuer: "BadgeMate",
                 recipient: reciver,
                 description: "Codeforces badge",
                 value: valueBadge,
                 issueDate: new Date(),
-                image: null,
+               
                 remark: "Codeforces badge",
             });
             badge.save();
@@ -505,9 +557,3 @@ app.listen(process.env.PORT || "3000",function(){
     console.log("Server has started !");
 });
 
-
-
-// name of Certificate
-// isseued by 
-// url of proff:
-// cerified by badgePackSchema; NO;

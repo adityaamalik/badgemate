@@ -36,14 +36,17 @@
             </div>
         </nav>
         <section  id="event-section" class="event-section">
-            <h3 class="my-3">My badges</h3>
+            <h3 class="my-3 text-centre">My badges</h3>
             <div class="theme-cards">
                 <% foundBadges.forEach(badge => { %>
                   
                         <div class="theme-card ">
                       
                             <h5 class="card-title"><%= badge.name %></h5>
+                       
+                   
                             <img src="data:image/<%=badge.image.contentType%>;base64,<%=badge.image.data.toString('base64')%>" style="width:50px; height: 50px;">
+                       
                             <ul style="list-style-type: none;">
                                 <li>Issuer : <%= badge.issuer %> </li>
                                 <li>Value : <%= badge.value %></li>
@@ -64,6 +67,41 @@
         </div>
 
 
+
+        <h3 class="my-3 text-centre">Other badges</h3>
+        <div class="theme-cards">
+            <% foundCodeforcesbadge.forEach(badge => { %>
+              
+                    <div class="theme-card ">
+                  
+                        <h5 class="card-title"><%= badge.name %></h5>
+                   
+               
+                      
+                   
+                        <ul style="list-style-type: none;">
+                            <li>Issuer : <%= badge.issuer %> </li>
+                            <li>Value : <%= badge.value %></li>
+                            <li>Description : <%= badge.description %></li>
+                            <li>Issue Date : <%= badge.issueDate %></li>
+                            <li>Remark : <%= badge.remark %></li>
+                        </ul>
+                       
+                        <form method="POST" action="/<%= user_id %>/<%= badge._id %>/removeotherbadge">
+                            <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                        </form>
+                    </div>
+                
+            <% }); %> 
+   
+    </div>
+
+
+
+
+
+
+
         <h3 class="my-3">My certificates</h3>
         <div class="theme-cards">
             <% foundCertificate.forEach(certificate => { %>
@@ -79,7 +117,7 @@
 
                             <a href="<%= certificate.url %>" class="btn btn-outline-primary"> Verification URL</a>
                         </ul>
-                        <a href="#" class="btn btn-outline-primary">Share</a>
+                        
                         <form method="POST" action="/<%= user_id %>/<%= certificate._id %>/remove">
                             <input type="submit" value="Delete" class="btn btn-outline-danger" />
                         </form>
