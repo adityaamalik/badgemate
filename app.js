@@ -518,7 +518,7 @@ app.post("/:user_id/codeforces",function(req,res){
             badge.save();
           });
         });
-        res.redirect(`/${req.params.user_id}/badgepack`);
+        res.redirect(`/${req.params.user_id}/dashboard`);
     }
     else
      {

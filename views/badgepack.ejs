@@ -36,7 +36,14 @@
             </div>
         </nav>
         <section  id="event-section" class="event-section">
-            <h3 class="my-3 text-centre">My badges</h3>
+
+            <% if(foundBadges.length === 0 && foundCodeforcesbadge.length === 0 && foundCertificate.length === 0) { %> 
+                <h3 class="my-3 text-centre">No Badges to display</h3>
+            <% } %> 
+
+            <% if(foundBadges.length !== 0) { %> 
+                <h3 class="my-3 text-centre">My badges</h3>
+            <% } %> 
             <div class="theme-cards">
                 <% foundBadges.forEach(badge => { %>
                   
@@ -67,8 +74,9 @@
         </div>
 
 
-
-        <h3 class="my-3 text-centre">Other badges</h3>
+        <% if(foundCodeforcesbadge.length !== 0) { %>
+            <h3 class="my-3 text-centre">Other badges</h3>
+        <% } %>
         <div class="theme-cards">
             <% foundCodeforcesbadge.forEach(badge => { %>
               
@@ -100,9 +108,9 @@
 
 
 
-
-
-        <h3 class="my-3">My certificates</h3>
+        <% if(foundCertificate.length !== 0) { %>
+            <h3 class="my-3">My certificates</h3>
+        <% } %> 
         <div class="theme-cards">
             <% foundCertificate.forEach(certificate => { %>
               
