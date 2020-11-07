@@ -19,7 +19,7 @@ app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(session({
-    secret: process.env.SESSION_KEY,
+    secret: "ilovefootball",
     resave: false,
     saveUninitialized: false
 }));
@@ -27,7 +27,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect("mongodb://localhost:27017/badgeMateDB", { useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false });
 mongoose.set("useCreateIndex", true);
 
 
