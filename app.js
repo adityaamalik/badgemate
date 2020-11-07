@@ -31,9 +31,6 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true,useUnifiedTopolo
 mongoose.set("useCreateIndex", true);
 
 
-// mongodb+srv://admin-aditya:Mathematics@01@cluster0.x5vhu.mongodb.net/badgeMateDB
-
-
 // mongodb://localhost:27017/badgeMateDB
 const userSchema = new mongoose.Schema({
     username: String,
