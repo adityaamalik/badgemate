@@ -115,9 +115,9 @@
                             <li>creation Date : <%= certificate.creationDate %></li>
                             <li>Verification: <%=certificate.verified%></li>
 
-                            <a href="<%= certificate.url %>" class="btn btn-outline-primary"> Verification URL</a>
                         </ul>
-                        
+
+                        <a href="<%= certificate.url %>" class="btn btn-outline-primary mb-3"> Verification URL</a>
                         <form method="POST" action="/<%= user_id %>/<%= certificate._id %>/remove">
                             <input type="submit" value="Delete" class="btn btn-outline-danger" />
                         </form>

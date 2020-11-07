@@ -485,7 +485,7 @@ app.post("/:user_id/codeforces",function(req,res){
             const userdata=JSON.parse(data)
             const fname=userdata.result[0].handle
             const maxrating=userdata.result[0].maxRating
-             let val=0
+             let valueBadge=0;
               if(maxrating>=3000)
               valueBadge=10
               else if(maxrating< 3000 && maxrating>=2700 )
